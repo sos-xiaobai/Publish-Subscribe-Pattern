@@ -1,90 +1,102 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "alg_fifo.h"
 
-#define MAX_SIZE 10
-
-typedef struct {
-    int data[MAX_SIZE];
-    int front;
-    int rear;
-    int count;
-} CircularFifo;
-
-void init(CircularFifo* fifo) {
-    fifo->front = 0;
-    fifo->rear = -1;
-    fifo->count = 0;
+/**
+ * @brief 初始化循环队列
+ * 
+ * @param fifo 队列指针
+ * @param __element_byte_size 元素大小（单位Byte）
+ * @param __max_element_number 队列能装下的该元素最大个数
+ * @return Enum_Fifo_Status 队列状态
+ *     - FIFO_OK: 初始化成功
+ *     - FIFO_ERROR: 初始化失败
+ */
+Enum_Fifo_Status Fifo_Init(CircularFifo *fifo, uint8_t __element_byte_size, uint8_t __max_element_number)
+{
+    if (fifo->element_byte_size * fifo->max_element_number > MAX_BYTE_SIZE)
+        return FIFO_ERROR;
+    else
+    {
+        fifo->element_byte_size = __element_byte_size;
+        fifo->max_element_number = __max_element_number;
+    }
+    if (fifo->pdata = (uint8_t *)malloc(fifo->element_byte_size * fifo->max_element_number))
+    {
+        fifo->front_index = 0;
+        fifo->rear_index = 0;
+        fifo->count = 0;
+        return FIFO_OK;
+    }
+    else
+        return FIFO_ERROR;
 }
 
-int isFull(CircularFifo* fifo) {
-    return fifo->count == MAX_SIZE;
+/**
+ * 检查循环FIFO是否已满。
+ *
+ * @param fifo 要检查的循环FIFO。
+ * @return 如果FIFO已满，则返回1；否则返回0。
+ */
+uint8_t Fifo_Is_Full(CircularFifo *fifo)
+{
+    return fifo->count == fifo->max_element_number;
 }
 
-int isEmpty(CircularFifo* fifo) {
+/**
+ * 检查循环FIFO是否为空。
+ *
+ * @param fifo 要检查的循环FIFO。
+ * @return 如果FIFO为空，则返回1；否则返回0。
+ */
+uint8_t Fifo_Is_Empty(CircularFifo *fifo)
+{
     return fifo->count == 0;
 }
 
-void enqueue(CircularFifo* fifo, int item) {
-    if (isFull(fifo)) {
-        fifo->rear = (fifo->rear + 1) % MAX_SIZE;
-        fifo->data[fifo->rear] = item;
-        fifo->front = (fifo->front + 1) % MAX_SIZE;
-    } else {
-        fifo->rear = (fifo->rear + 1) % MAX_SIZE;
-        fifo->data[fifo->rear] = item;
+/**
+ * 将一个元素入队列。
+ *
+ * @param fifo 要操作的循环FIFO。
+ * @param pitem 要入队列的元素。
+ * @param element_byte_size 元素大小（单位Byte）
+ */
+Enum_Fifo_Status Fifo_Enqueue(CircularFifo *fifo, const uint8_t *pitem, uint8_t element_byte_size)
+{
+    if (element_byte_size != fifo->element_byte_size)
+        return FIFO_ERROR;
+    if (Fifo_Is_Full(fifo))
+    {
+        memcpy(fifo->pdata + fifo->rear_index * fifo->element_byte_size, pitem, fifo->element_byte_size); // 入队列
+        fifo->rear_index = (fifo->rear_index + 1) % fifo->max_element_number;
+        fifo->front_index = (fifo->front_index + 1) % fifo->max_element_number;
+    }
+    else
+    {
+        memcpy(fifo->pdata + fifo->rear_index * fifo->element_byte_size, pitem, fifo->element_byte_size); // 入队列
+        fifo->rear_index = (fifo->rear_index + 1) % fifo->max_element_number;
         fifo->count++;
     }
+    return FIFO_OK;
 }
 
-int dequeue(CircularFifo* fifo) {
-    if (isEmpty(fifo)) {
-        printf("FIFO is empty.\n");
-        return -1;
-    } else {
-        int item = fifo->data[fifo->front];
-        fifo->front = (fifo->front + 1) % MAX_SIZE;
+/**
+ * 将一个元素出队列。
+ *
+ * @param fifo 要操作的循环FIFO。
+ * @param pitem 用于存储出队列元素的缓冲区。
+ * @param element_byte_size 元素大小（单位Byte）
+ * @return 如果成功出队列，则返回1；否则返回0。
+ */
+Enum_Fifo_Status Fifo_Dequeue(CircularFifo *fifo, uint8_t *pitem, uint8_t element_byte_size)
+{
+    if (Fifo_Is_Empty(fifo) || element_byte_size != fifo->element_byte_size)
+    {
+        return FIFO_ERROR;
+    }
+    else
+    {
+        memcpy(pitem, fifo->pdata + fifo->front_index * fifo->element_byte_size, fifo->element_byte_size); // 出队列
+        fifo->front_index = (fifo->front_index + 1) % fifo->max_element_number;
         fifo->count--;
-        return item;
+        return FIFO_OK;
     }
 }
-
-int main() {
-    CircularFifo fifo;
-    init(&fifo);
-
-    // Enqueue some items
-    enqueue(&fifo, 10);
-    enqueue(&fifo, 20);
-    enqueue(&fifo, 30);
-
-    // Dequeue and print items
-    printf("%d\n", dequeue(&fifo));
-    printf("%d\n", dequeue(&fifo));
-    printf("%d\n", dequeue(&fifo));
-
-    // Enqueue some more items to demonstrate overwrite
-    enqueue(&fifo, 40);
-    enqueue(&fifo, 50);
-    enqueue(&fifo, 60);
-
-    // Dequeue and print items again
-    printf("%d\n", dequeue(&fifo));
-    printf("%d\n", dequeue(&fifo));
-    printf("%d\n", dequeue(&fifo));
-
-    return 0;
-}
-
-/*
-
-   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
- ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
- ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
- ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
- ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
-  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
-  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
-  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
-           ░     ░ ░      ░  ░
-
-*/
