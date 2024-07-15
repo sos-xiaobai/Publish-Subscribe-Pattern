@@ -2,7 +2,8 @@
 ## 1. 文件添加方法
 *  ### 第一步 添加 *alg_fifo.cpp/.h*  和 *dvc_message.cpp/.h* 文件到工程*User*文件夹下
 *  ### 第二步 确保 *alg_fifo.h* 可被 *dvc_message.h* 包含
-*  ### 第三步 删除*alg_fifo.h* 中的 [类型定义](./pictures/类型定义.png)  直接删掉这一行
+*  ### 第三步 删除*alg_fifo.h* 中的第10行，直接删掉这一行就行
+![](./pictures/类型定义.png)  
 
 ## 2.使用机制
 *  ### 第一步   创建一个消息中心实例      
