@@ -41,9 +41,14 @@
     ```
 ## 3. 更多配置
 
+* *dvc_message.h*
 ```c++
 #define MAX_TOPIC_NAME_LEN 32 // 最大的话题名长度,每个话题都有字符串来命名
 #define MAX_TOPIC_COUNT 12    // 消息中心最多支持的话题数量
 #define QUEUE_SIZE 10         // 每个订阅者的消息队列大小
+```
+
+* *alg_fifo.h*
+```c++
 #define MAX_BYTE_SIZE 512     // 消息队列可以申请的最大堆长度（单位Byte）
 ```
