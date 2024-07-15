@@ -7,7 +7,7 @@
  * @param __data_len 消息数据长度
  * @return Struct_Subscriber* 返回注册的订阅者指针
  */
-Struct_Subscriber* Class_Message::SubRegister(char  __topic_name[],int __data_len)
+Struct_Subscriber* Class_Message::SubRegister(const uint8_t  __topic_name[],uint8_t __data_len)
 {
     if(strlen(__topic_name) > MAX_TOPIC_NAME_LEN)
     {
@@ -70,7 +70,7 @@ Struct_Subscriber* Class_Message::SubRegister(char  __topic_name[],int __data_le
  * @param __data_len 消息数据长度
  * @return Struct_Publisher* 返回注册的发布者指针
  */
-Struct_Publisher* Class_Message::PubRegister(char __topic_name[],int __data_len)
+Struct_Publisher* Class_Message::PubRegister(const uint8_t __topic_name[],uint8_t __data_len)
 {
     // 从头开始遍历所有话题
     Struct_Publisher* Now_Publisher = First_Publisher;

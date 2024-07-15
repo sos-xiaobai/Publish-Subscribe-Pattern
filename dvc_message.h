@@ -44,8 +44,8 @@ static Struct_Publisher Null_Publisher_Head = {
 class Class_Message
 {
     public:
-        Struct_Subscriber* SubRegister(char __topic_name[],int __data_len);
-        Struct_Publisher* PubRegister(char __topic_name[],int __data_len);
+        Struct_Subscriber* SubRegister(const uint8_t __topic_name[],uint8_t __data_len);
+        Struct_Publisher* PubRegister(const uint8_t __topic_name[],uint8_t __data_len);
         template <typename T>
         void SubGet_Message(Struct_Subscriber* __subscriber, T& __data);
         template <typename T>
