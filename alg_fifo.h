@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define MAX_BYTE_SIZE 512 // fifo可以申请的最大堆长度（单位Byte）
 

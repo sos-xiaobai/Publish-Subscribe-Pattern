@@ -1,5 +1,18 @@
 {
     "files.associations": {
-        "alg_fifo.h": "c"
+        "alg_fifo.h": "c",
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "exception": "cpp",
+        "functional": "cpp",
+        "istream": "cpp",
+        "limits": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "streambuf": "cpp",
+        "string.h": "c",
+        "cstdlib": "cpp"
     }
 }
