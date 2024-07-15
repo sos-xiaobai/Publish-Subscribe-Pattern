@@ -1,4 +1,4 @@
-#include "message.h"
+#include "dvc_message.h"
 
 /**
  * @brief 注册订阅者到指定的话题

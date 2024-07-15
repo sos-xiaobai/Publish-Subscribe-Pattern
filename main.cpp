@@ -1,4 +1,4 @@
-#include "message.h"
+#include "dvc_message.h"
 
 #pragma pack(push, 1)
 struct Data
