@@ -47,8 +47,25 @@
 #define MAX_TOPIC_COUNT 12    // 消息中心最多支持的话题数量
 #define QUEUE_SIZE 10         // 每个订阅者的消息队列大小
 ```
-
 * *alg_fifo.h*
 ```c++
 #define MAX_BYTE_SIZE 512     // 消息队列可以申请的最大堆长度（单位Byte）
 ```
+## 4.  注意事项！
+如果话题所对应的数据类型如果是自定义数据类型`Struct`，就必须对这个结构体使用*一字节对齐*，否则消息队列会出问题。  
+例：
+```c++
+struct Data
+{
+   uint8_t name[5];
+   uint8_t age;
+} __attribute__((packed));  //一字节对齐
+```
+
+* 重要的事情说三遍！！！  
+必须对自定义数据类型`Struct`使用*一字节对齐*  
+必须对自定义数据类型`Struct`使用*一字节对齐*  
+必须对自定义数据类型`Struct`使用*一字节对齐*
+
+
+
