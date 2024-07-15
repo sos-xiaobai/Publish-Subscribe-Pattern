@@ -104,5 +104,5 @@ Struct_Publisher* Class_Message::PubRegister(const uint8_t __topic_name[],uint8_
     return publisher;
 }
 
-
+Class_Message Message_Manager;
 

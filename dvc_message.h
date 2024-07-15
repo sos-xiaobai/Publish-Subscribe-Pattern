@@ -130,5 +130,9 @@ void Class_Message::PubPush_Message(Struct_Publisher* __publisher, T& __data)
     return;
 }
 
+typedef Struct_Subscriber* Subscriber;
+typedef Struct_Publisher* Publisher;
+
+extern Class_Message Message_Manager;
 
 #endif 
